@@ -1,3 +1,5 @@
+
+import pytest
 from main import BooksCollector
 
 
@@ -21,9 +23,47 @@ class TestBooksCollector:
         # словарь books_rating, который нам возвращает метод get_books_rating, имеет длину 2
         assert len(collector.get_books_genre()) == 2
 
+    @pytest.mark.parametrize('genre', ['Фантастика', 'Ужасы', 'Детективы', 'Мультфильмы', 'Комедии'])
+    def test_init_all_genre_exist(self, genre):
+        collector = BooksCollector()
+        assert genre in collector.genre
+
+    def test_set_book_genre_genre_from_list_set_ok(self):
+        collector = BooksCollector()
+        collector.books_genre['Гордость и предубеждение и зомби'] = ''
+        collector.set_book_genre('Гордость и предубеждение и зомби', 'Ужасы')
+        assert collector.books_genre['Гордость и предубеждение и зомби'] == 'Ужасы'
+
+    def test_set_book_genre_genre_out_of_list_not_set(self):
+        collector = BooksCollector()
+        collector.books_genre['Гордость и предубеждение и зомби'] = ''
+        collector.set_book_genre('Гордость и предубеждение и зомби', 'Драма')
+        assert collector.books_genre['Гордость и предубеждение и зомби'] == ''
+
+    def test_get_book_genre_return_genre_set(self):
+        collector = BooksCollector()
+        collector.books_genre = {'Гордость и предубеждение и зомби': 'Ужасы',
+                                 'Что делать, если ваш кот хочет вас убить': 'Ужасы', 'It': 'Комедии'}
+        assert collector.get_book_genre('Гордость и предубеждение и зомби') == 'Ужасы'
+
+    def test_get_books_with_specific_genre_get_two_books_the_same_genre_of_three(self):
+        collector = BooksCollector()
+        collector.books_genre = {'Гордость и предубеждение и зомби': 'Ужасы',
+                                'Что делать, если ваш кот хочет вас убить': 'Ужасы', 'It': 'Комедии'}
+        assert len(collector.get_books_with_specific_genre('Ужасы')) == 2
+
+    def test_get_books_for_children_get_one_book_without_age_rating_of_three(self):
+        collector = BooksCollector()
+        collector.books_genre = {'Гордость и предубеждение и зомби': 'Ужасы',
+                                 'Что делать, если ваш кот хочет вас убить': 'Ужасы', 'It': 'Комедии'}
+        assert len(collector.get_books_for_children()) == 1
+
+
+
+
 
 test1 = TestBooksCollector()
-test1.test_add_new_book_add_two_books()
-
-    # напиши свои тесты ниже
-    # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
+#test1.test_add_new_book_add_two_books()
+#test1.test_init_all_genre_exist(genre)
+# напиши свои тесты ниже
+# чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()

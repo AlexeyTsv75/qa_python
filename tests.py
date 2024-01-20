@@ -62,6 +62,7 @@ class TestBooksCollector:
 
 
 
+
 test1 = TestBooksCollector()
 #test1.test_add_new_book_add_two_books()
 #test1.test_init_all_genre_exist(genre)

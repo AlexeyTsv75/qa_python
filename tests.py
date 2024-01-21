@@ -23,6 +23,8 @@ class TestBooksCollector:
         # словарь books_rating, который нам возвращает метод get_books_rating, имеет длину 2
         assert len(collector.get_books_genre()) == 2
 
+    # напиши свои тесты ниже
+    # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
     @pytest.mark.parametrize('genre', ['Фантастика', 'Ужасы', 'Детективы', 'Мультфильмы', 'Комедии'])
     def test_init_all_genre_exist(self, genre):
         collector = BooksCollector()
@@ -49,7 +51,7 @@ class TestBooksCollector:
     def test_get_books_with_specific_genre_get_two_books_the_same_genre_of_three(self):
         collector = BooksCollector()
         collector.books_genre = {'Гордость и предубеждение и зомби': 'Ужасы',
-                                'Что делать, если ваш кот хочет вас убить': 'Ужасы', 'It': 'Комедии'}
+                                 'Что делать, если ваш кот хочет вас убить': 'Ужасы', 'It': 'Комедии'}
         assert len(collector.get_books_with_specific_genre('Ужасы')) == 2
 
     def test_get_books_for_children_get_one_book_without_age_rating_of_three(self):
@@ -58,13 +60,37 @@ class TestBooksCollector:
                                  'Что делать, если ваш кот хочет вас убить': 'Ужасы', 'It': 'Комедии'}
         assert len(collector.get_books_for_children()) == 1
 
+    def test_add_book_in_favorites_add_two_new_books(self):
+        collector = BooksCollector()
+        collector.books_genre = {'Гордость и предубеждение и зомби': 'Ужасы',
+                                 'Что делать, если ваш кот хочет вас убить': 'Ужасы', 'It': 'Комедии'}
+        collector.add_book_in_favorites('Гордость и предубеждение и зомби')
+        collector.add_book_in_favorites('It')
+        assert len(collector.favorites) == 2
 
+    def test_add_book_in_favorites_add_book_one_more_time_not_possible(self):
+        collector = BooksCollector()
+        collector.books_genre = {'Гордость и предубеждение и зомби': 'Ужасы',
+                                 'Что делать, если ваш кот хочет вас убить': 'Ужасы', 'It': 'Комедии'}
+        collector.favorites = ['It', 'Гордость и предубеждение и зомби']
+        collector.add_book_in_favorites('It')
+        assert len(collector.favorites) == 2
 
+    def test_add_book_in_favorites_add_book_out_of_list_not_possible(self):
+        collector = BooksCollector()
+        collector.books_genre = {'Гордость и предубеждение и зомби': 'Ужасы',
+                                 'Что делать, если ваш кот хочет вас убить': 'Ужасы', 'It': 'Комедии'}
+        collector.favorites = ['It', 'Гордость и предубеждение и зомби']
+        collector.add_book_in_favorites('The Fall of the House of Usher')
+        assert 'The Fall of the House of Usher' not in collector.favorites
 
+    def test_delete_book_from_favorites_remove_one_book_possible(self):
+        collector = BooksCollector()
+        collector.favorites = ['It', 'Гордость и предубеждение и зомби']
+        collector.delete_book_from_favorites('It')
+        assert 'It' not in collector.favorites
 
-
-test1 = TestBooksCollector()
-#test1.test_add_new_book_add_two_books()
-#test1.test_init_all_genre_exist(genre)
-# напиши свои тесты ниже
-# чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
+    def test_get_list_of_favorites_books_return_list_of_favorites_books_successfully(self):
+        collector = BooksCollector()
+        collector.favorites = ['It', 'Гордость и предубеждение и зомби']
+        assert len(collector.get_list_of_favorites_books()) == 2
